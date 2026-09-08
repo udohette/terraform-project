@@ -1,0 +1,13 @@
+import json
+config = {
+"app_name": "inventory-service"
+"port": 8080,
+"environment": "staging"
+}
+,
+with open("output.json", "w") as file:
+json.dump(config, file, indent=2
+
+
+json_text = json.dumps(config, indent=2)
+print(json_text)

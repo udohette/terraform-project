@@ -1,0 +1,6 @@
+import json
+from urllib.request import urlopen
+response = urlopen("https://jsonplaceholder.typicode.com/posts/1")
+data = response.read().decode("utf-8")
+parsed = json.loads(data)
+print(parsed["title"])

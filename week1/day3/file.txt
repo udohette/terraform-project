@@ -1,0 +1,5 @@
+total 12
+drwxrwxr-x 2 dennis dennis 4096 May  6 15:57 .
+drwxrwxr-x 4 dennis dennis 4096 May  6 15:54 ..
+-rw-rw-r-- 1 dennis dennis  110 May  6 15:56 app.log
+-rw-rw-r-- 1 dennis dennis    0 May  6 15:57 file.txt

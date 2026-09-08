@@ -1,0 +1,6 @@
+{
+  "app_name": "inventory-service",
+  "port": 8080,
+  "environment": "staging",
+  "healthy": true
+}

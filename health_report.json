@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-06-08T16:43:33.830985",
+  "results": [
+    {
+      "name": "Example",
+      "url": "https://example.com",
+      "status": "reachable",
+      "http_code": 200
+    },
+    {
+      "name": "JSONPlaceholder",
+      "url": "https://jsonplaceholder.typicode.com/posts/1",
+      "status": "reachable",
+      "http_code": 200
+    }
+  ]
+}
