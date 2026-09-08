@@ -1,0 +1,4 @@
+This is first line of message
+Updating the note1 file
+This line of message was updated with nano command.
+
