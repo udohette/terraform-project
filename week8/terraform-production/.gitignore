@@ -1,0 +1,20 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+
+# Terraform lock files
+# Keep provider lock files under version control
+# .terraform.lock.hcl
+
+# Generated files
+*.dot
+*.png
+
+# Python
+.venv/
+__pycache__/
+*.pyc
