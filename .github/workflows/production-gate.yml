@@ -1,0 +1,22 @@
+name: Production Gate Demo
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  production-gate:
+    name: Enter production environment
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Confirm production authorization
+        run: |
+          echo "Production approval was granted."
+          echo "The deployment job can now continue."
