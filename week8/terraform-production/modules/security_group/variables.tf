@@ -3,5 +3,5 @@ variable "vpc_id" {
 }
 
 variable "allowed_http_cidr" {
-  
+  type = string  
 }
