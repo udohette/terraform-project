@@ -5,7 +5,7 @@
 *.tfplan
 crash.log
 crash.*.log
-
+tfplan
 # Terraform lock files
 # Keep provider lock files under version control
 # .terraform.lock.hcl
