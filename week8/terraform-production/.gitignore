@@ -12,7 +12,7 @@ tfplan
 
 # Generated files
 *.dot
-*.png
+
 
 # Python
 .venv/
