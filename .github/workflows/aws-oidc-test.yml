@@ -25,3 +25,19 @@ jobs:
 
       - name: Display assumed AWS identity
         run: aws sts get-caller-identity
+            - name: Inspect safe OIDC claims
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const token = await core.getIDToken('sts.amazonaws.com');
+            const payload = JSON.parse(
+              Buffer.from(token.split('.')[1], 'base64url').toString()
+            );
+
+            core.info(`issuer: ${payload.iss}`);
+            core.info(`audience: ${payload.aud}`);
+            core.info(`subject: ${payload.sub}`);
+            core.info(`repository: ${payload.repository}`);
+            core.info(`repository_id: ${payload.repository_id}`);
+            core.info(`repository_owner: ${payload.repository_owner}`);
+            core.info(`repository_owner_id: ${payload.repository_owner_id}`);
