@@ -1,0 +1,31 @@
+{
+ "Version": "2012-10-17",
+ "Statement": [
+  {
+   "Sid": "TerraformNetwork",
+   "Effect": "Allow",
+   "Action": [
+      "ec2:CreateVpc",
+      "ec2:DeleteVpc",
+      "ec2:CreateSubnet",
+      "ec2:DeleteSubnet",
+      "ec2:CreateRouteTable",
+      "ec2:DeleteRouteTable",
+      "ec2:CreateInternetGateway",
+      "ec2:AttachInternetGateway"
+   ],
+   "Resource": "*"
+  },
+  {
+   "Sid": "TerraformCompute",
+   "Effect": "Allow",
+   "Action": [
+      "ec2:RunInstances",
+      "ec2:TerminateInstances",
+      "ec2:CreateSecurityGroup",
+      "ec2:DeleteSecurityGroup"
+   ],
+   "Resource": "*"
+  }
+ ]
+}
