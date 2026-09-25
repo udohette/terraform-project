@@ -43,3 +43,6 @@ jobs:
 
       - name: Terraform plan
         run: terraform plan -input=false
+
+      - name: Terraform apply
+        run: terraform apply -auto-approve
