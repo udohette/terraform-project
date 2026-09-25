@@ -1,0 +1,45 @@
+name: Terraform Production Plan
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  terraform-plan:
+    name: Run production Terraform plan
+    runs-on: ubuntu-latest
+    environment: production
+
+    defaults:
+      run:
+        working-directory: week8/terraform-production/live/prod
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure temporary AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_TERRAFORM_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Confirm assumed AWS identity
+        run: aws sts get-caller-identity
+
+      - name: Terraform initialization
+        run: terraform init -backend=false
+
+      - name: Terraform validation
+        run: terraform validate
+
+      - name: Terraform plan
+        run: terraform plan -input=false
