@@ -1,16 +1,12 @@
 resource "aws_vpc" "main" {
-
   cidr_block = var.vpc_cidr
-
 }
-
 
 resource "aws_default_security_group" "default" {
   vpc_id = aws_vpc.main.id
 
   ingress = []
-
-  egress = []
+  egress  = []
 }
 
 resource "aws_flow_log" "main" {
@@ -18,89 +14,88 @@ resource "aws_flow_log" "main" {
   traffic_type    = "ALL"
   iam_role_arn    = aws_iam_role.flow_log.arn
   log_destination = aws_cloudwatch_log_group.flow_log.arn
+  depends_on      = [aws_iam_role_policy.flow_log]
 }
-
 
 data "aws_caller_identity" "current" {}
 
 resource "aws_kms_key" "flow_log" {
-
-  description = "KMS key for VPC Flow Logs CloudWatch Log Group"
-
+  description         = "KMS key for VPC Flow Logs CloudWatch Log Group"
   enable_key_rotation = true
 
-
   policy = jsonencode({
-
     Version = "2012-10-17"
 
     Statement = [
       {
-        Sid = "Enable IAM User Permissions"
-
+        Sid    = "Enable IAM User Permissions"
         Effect = "Allow"
 
         Principal = {
           AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
         }
 
-        Action = "kms:*"
+        Action   = "kms:*"
+        Resource = "*"
+      },
+      {
+        Sid    = "AllowCloudWatchLogs"
+        Effect = "Allow"
+
+        Principal = {
+          Service = "logs.us-east-1.amazonaws.com"
+        }
+
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ]
 
         Resource = "*"
+
+        Condition = {
+          ArnEquals = {
+            "kms:EncryptionContext:aws:logs:arn" = "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:log-group:/aws/vpc/flow-logs"
+          }
+        }
       }
     ]
-
   })
 }
 
-
 resource "aws_subnet" "public" {
-
-  vpc_id = aws_vpc.main.id
-
-  cidr_block = var.public_subnet_cidr
-
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_subnet_cidr
   map_public_ip_on_launch = false
-
 }
 
-
 resource "aws_internet_gateway" "main" {
-
   vpc_id = aws_vpc.main.id
 
   tags = {
     Name = "ei-week8-igw"
   }
-
 }
 
-
 resource "aws_route_table" "public" {
-
   vpc_id = aws_vpc.main.id
 
   route {
-
     cidr_block = "0.0.0.0/0"
-
     gateway_id = aws_internet_gateway.main.id
-
   }
 
   tags = {
     Name = "ei-week8-public-rt"
   }
-
 }
 
-
 resource "aws_route_table_association" "public" {
-
-  subnet_id = aws_subnet.public.id
-
+  subnet_id      = aws_subnet.public.id
   route_table_id = aws_route_table.public.id
-
 }
 
 resource "aws_cloudwatch_log_group" "flow_log" {
@@ -129,7 +124,6 @@ resource "aws_iam_role" "flow_log" {
   })
 }
 
-
 resource "aws_iam_role_policy" "flow_log" {
   name = "vpc-flow-log-policy"
   role = aws_iam_role.flow_log.id
@@ -149,7 +143,7 @@ resource "aws_iam_role_policy" "flow_log" {
           "logs:DescribeLogStreams"
         ]
 
-        Resource = aws_cloudwatch_log_group.flow_log.arn
+        Resource = "${aws_cloudwatch_log_group.flow_log.arn}:*"
       }
     ]
   })
