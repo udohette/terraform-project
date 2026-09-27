@@ -8,7 +8,12 @@
         "ec2:DescribeVpcs",
         "ec2:DescribeSubnets",
         "ec2:DescribeSecurityGroups",
-        "ec2:DescribeInstances"
+        "ec2:DescribeInstances",
+        "ec2:DescribeVpcAttribute",
+        "ec2:DescribeSecurityGroupRules",
+        "ec2:DescribeInternetGateways",
+        "ec2:DescribeRouteTables",
+        "ec2:AssociateRouteTable"
       ],
       "Resource": "*"
     },
@@ -54,6 +59,36 @@
         "ec2:DeleteTags"
       ],
       "Resource": "*"
+    },
+
+    {
+      "Sid": "CreateFlowLogKmsKey",
+      "Effect": "Allow",
+      "Action": "kms:CreateKey",
+      "Resource": "*"
+    },
+
+    {
+      "Sid": "ManageFlowLogKmsKey",
+      "Effect": "Allow",
+      "Action": [
+        "kms:PutKeyPolicy",
+        "kms:DescribeKey",
+        "kms:GetKeyPolicy",
+        "kms:EnableKeyRotation",
+        "kms:GetKeyRotationStatus"
+      ],
+      "Resource": "arn:aws:kms:us-east-1:000624196441:key/*"
+     },
+
+    {
+      "Sid": "CreateFlowLogRole",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:GetRole"
+      ],
+      "Resource": "arn:aws:iam::000624196441:role/vpc-flow-log-role"
     }
   ]
 }
