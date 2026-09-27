@@ -89,6 +89,75 @@
         "iam:GetRole"
       ],
       "Resource": "arn:aws:iam::000624196441:role/vpc-flow-log-role"
-    }
+    },
+
+    {
+  "Sid": "ManageLabFlowLogs",
+  "Effect": "Allow",
+  "Action": [
+    "ec2:CreateFlowLogs",
+    "ec2:DescribeFlowLogs",
+    "ec2:DeleteFlowLogs"
+  ],
+  "Resource": "*"
+},
+{
+  "Sid": "ManageLabLogGroup",
+  "Effect": "Allow",
+  "Action": [
+    "logs:CreateLogGroup",
+    "logs:DescribeLogGroups",
+    "logs:DeleteLogGroup",
+    "logs:PutRetentionPolicy",
+    "logs:DescribeLogStreams"
+  ],
+  "Resource": "*"
+},
+{
+  "Sid": "ManageLabLogGroupEncryption",
+  "Effect": "Allow",
+  "Action": [
+    "logs:AssociateKmsKey",
+    "logs:DisassociateKmsKey"
+  ],
+  "Resource": "arn:aws:logs:us-east-1:000624196441:log-group:/aws/vpc/flow-logs"
+},
+{
+  "Sid": "ManageLabRoles",
+  "Effect": "Allow",
+  "Action": [
+    "iam:CreateRole",
+    "iam:GetRole",
+    "iam:DeleteRole",
+    "iam:PutRolePolicy",
+    "iam:GetRolePolicy",
+    "iam:DeleteRolePolicy"
+  ],
+  "Resource": [
+    "arn:aws:iam::000624196441:role/vpc-flow-log-role",
+    "arn:aws:iam::000624196441:role/production-web-role"
+  ]
+},
+{
+  "Sid": "ManageLabInstanceProfile",
+  "Effect": "Allow",
+  "Action": [
+    "iam:CreateInstanceProfile",
+    "iam:GetInstanceProfile",
+    "iam:DeleteInstanceProfile",
+    "iam:AddRoleToInstanceProfile",
+    "iam:RemoveRoleFromInstanceProfile"
+  ],
+  "Resource": "arn:aws:iam::000624196441:instance-profile/production-web-profile"
+},
+{
+  "Sid": "PassLabRoles",
+  "Effect": "Allow",
+  "Action": "iam:PassRole",
+  "Resource": [
+    "arn:aws:iam::000624196441:role/vpc-flow-log-role",
+    "arn:aws:iam::000624196441:role/production-web-role"
+  ]
+}
   ]
 }
