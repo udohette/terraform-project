@@ -1,0 +1,31 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListProductionState",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::ei-terraform-state-000624196441",
+      "Condition": {
+        "StringEquals": {
+          "s3:prefix": "production/terraform.tfstate"
+        }
+      }
+    },
+    {
+      "Sid": "ReadWriteProductionState",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject"],
+      "Resource": [
+        "arn:aws:s3:::ei-terraform-state-000624196441/production/terraform.tfstate",
+        "arn:aws:s3:::ei-terraform-state-000624196441/production/terraform.tfstate.tflock"
+      ]
+    },
+    {
+      "Sid": "ReleaseProductionStateLock",
+      "Effect": "Allow",
+      "Action": "s3:DeleteObject",
+      "Resource": "arn:aws:s3:::ei-terraform-state-000624196441/production/terraform.tfstate.tflock"
+    }
+  ]
+}
