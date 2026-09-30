@@ -86,7 +86,8 @@
       "Effect": "Allow",
       "Action": [
         "iam:CreateRole",
-        "iam:GetRole"
+        "iam:GetRole",
+        "iam:ListRolePolicies"
       ],
       "Resource": "arn:aws:iam::000624196441:role/vpc-flow-log-role"
     },
