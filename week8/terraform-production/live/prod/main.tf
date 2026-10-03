@@ -11,7 +11,7 @@ module "security_group" {
   source = "../../modules/security_group"
 
   vpc_id            = module.network.vpc_id
-  allowed_http_cidr = "105.127.6.157/32"
+  allowed_http_cidr = "105.127.7.79/32"
 }
 
 # Web Server Module Call
@@ -35,7 +35,7 @@ module "web_server" {
   tags = {
     Environment = "prod"
     ManagedBy   = "Terraform"
-    TrainingDay = "10"
+    TrainingDay = "Final-Terraform-Day"
   }
 }
 
