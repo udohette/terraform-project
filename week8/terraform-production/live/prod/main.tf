@@ -1,37 +1,32 @@
-
-#Network Module Call
+# Network Module Call
 module "network" {
-
   source = "../../modules/network"
 
-  vpc_cidr = "10.20.0.0/16"
-
+  vpc_cidr           = "10.20.0.0/16"
   public_subnet_cidr = "10.20.1.0/24"
-
 }
-#Security Group Call
+
+# Security Group Call
 module "security_group" {
   source = "../../modules/security_group"
 
   vpc_id            = module.network.vpc_id
-  allowed_http_cidr = "10.0.0.0/8"
+  allowed_http_cidr = "105.127.6.157/32"
 }
 
-
-# Call the module
+# Web Server Module Call
 module "web_server" {
   source = "../../modules/web_server"
 
-  name = var.name
-
-  ami_id = data.aws_ami.ubuntu.id
-
+  name          = var.name
+  ami_id        = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
-
-  subnet_id = module.network.public_subnet_id
+  subnet_id     = module.network.public_subnet_id
 
   security_group_ids = [module.security_group.security_group_id]
+
   depends_on = [
+    module.network,
     module.security_group
   ]
 
@@ -40,16 +35,14 @@ module "web_server" {
   tags = {
     Environment = "prod"
     ManagedBy   = "Terraform"
+    TrainingDay = "10"
   }
 }
 
-
-#AMI Look up
+# AMI Lookup
 data "aws_ami" "ubuntu" {
-
   most_recent = true
-
-  owners = ["099720109477"]
+  owners      = ["099720109477"]
 
   filter {
     name = "name"
@@ -69,8 +62,7 @@ data "aws_ami" "ubuntu" {
   }
 }
 
-
-# State migration
+# State Migration
 moved {
   from = aws_instance.web
   to   = module.web_server.aws_instance.web
